@@ -24,4 +24,4 @@ app.route('/').get(({}, response: Response) => {
     response.status(200).json('OK');
 });
 
-app.use('/api/posts', postRoutes);
+app.use('/posts', postRoutes);
