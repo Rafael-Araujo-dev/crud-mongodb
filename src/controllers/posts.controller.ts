@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import Post from '../models/posts.model';
 
-import { generateSlug, generateUniqueSlug } from '../utils/slugGenerator';
+import { generateUniqueSlug } from '../utils/slugGenerator';
 
 export async function createPost(req: Request, res: Response) {
     const { title, content } = req.body;
