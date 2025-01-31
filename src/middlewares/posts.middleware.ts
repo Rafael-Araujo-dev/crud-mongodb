@@ -5,8 +5,8 @@ import PostType from '../types/posts.types';
 export function creationValidation(req: Request, res: Response, next: NextFunction) {
     const post = req.body as PostType;
 
-    if (!post.title || !post.body) {
-        res.status(400).json({ message: 'Title and body are required' });
+    if (!post.title || !post.content) {
+        res.status(400).json({ message: 'Title and content are required' });
         return;
     }
 
@@ -15,8 +15,8 @@ export function creationValidation(req: Request, res: Response, next: NextFuncti
         return;
     }
 
-    if (!post.body || typeof post.body !== 'string' || post.body.trim().length === 0) {
-        res.status(400).json({ message: 'Body is required and must be a non-empty string' });
+    if (!post.content || typeof post.content !== 'string' || post.content.trim().length === 0) {
+        res.status(400).json({ message: 'Content is required and must be a non-empty string' });
         return;
     }
 
@@ -26,8 +26,8 @@ export function creationValidation(req: Request, res: Response, next: NextFuncti
 export function updateValidation(req: Request, res: Response, next: NextFunction) {
     const post = req.body as PostType;
 
-    if (!post.title && !post.body) {
-        res.status(400).json({ message: 'Title or body are required' });
+    if (!post.title && !post.content) {
+        res.status(400).json({ message: 'Title or content are required' });
         return;
     }
 
@@ -36,8 +36,8 @@ export function updateValidation(req: Request, res: Response, next: NextFunction
         return;
     }
 
-    if (post.body !== undefined && (typeof post.body !== 'string' || post.body.trim().length === 0)) {
-        res.status(400).json({ message: 'Body must be a non-empty string if provided' });
+    if (post.content !== undefined && (typeof post.content !== 'string' || post.content.trim().length === 0)) {
+        res.status(400).json({ message: 'Content must be a non-empty string if provided' });
         return;
     }
 

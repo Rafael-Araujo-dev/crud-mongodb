@@ -4,7 +4,7 @@ import Post from '../models/posts.model';
 import { generateSlug, generateUniqueSlug } from '../utils/slugGenerator';
 
 export async function createPost(req: Request, res: Response) {
-    const { title, body } = req.body;
+    const { title, content } = req.body;
 
     try {
         const slug = await generateUniqueSlug(title);
@@ -14,7 +14,7 @@ export async function createPost(req: Request, res: Response) {
             return
         }
 
-        const post = new Post({ slug, title, body });
+        const post = new Post({ slug, title, content });
         
         await post.save();
         res.status(201).json(post);
@@ -56,7 +56,7 @@ export async function getPostById(req: Request, res: Response) {
 
 export async function updatePost(req: Request, res: Response) {
     const { _id } = req.params;
-    let { title, body, slug } = req.body;
+    let { title, content, slug } = req.body;
 
     try {
         const post = await Post.findById(_id);
@@ -68,7 +68,7 @@ export async function updatePost(req: Request, res: Response) {
             return
         }
 
-        const updtPost = await Post.findByIdAndUpdate(_id, { slug, title, body }, { new: true, runValidators: true });
+        const updtPost = await Post.findByIdAndUpdate(_id, { slug, title, content }, { new: true, runValidators: true });
 
         if (!updtPost) {
             res.status(404).json({ message: 'Post not found' });
