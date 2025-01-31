@@ -1,5 +1,6 @@
 export default interface PostType {
-    id: string;
+    _id: string;
+    slug: string;
     title: string;
     body: string;
 }

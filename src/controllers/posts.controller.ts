@@ -1,16 +1,25 @@
 import { Request, Response } from 'express';
 import Post from '../models/posts.model';
-import PostType from '../types/posts.types';
+
+import { generateSlug, generateUniqueSlug } from '../utils/slugGenerator';
 
 export async function createPost(req: Request, res: Response) {
-    const newPost: PostType = req.body;
+    const { title, body } = req.body;
 
     try {
-        const post = new Post(newPost);
+        const slug = await generateUniqueSlug(title);
+
+        if (!slug) {
+            res.status(400).json({ message: 'Unable to generate a unique slug after multiple attempts' });
+            return
+        }
+
+        const post = new Post({ slug, title, body });
+        
         await post.save();
         res.status(201).json(post);
     } catch (error) {
-        res.status(400).json({ message: 'Error creating post', error });
+        res.status(400).json({ message: 'Error creating post' });
     }
 }
 
@@ -46,17 +55,27 @@ export async function getPostById(req: Request, res: Response) {
 }
 
 export async function updatePost(req: Request, res: Response) {
-    const { params } = req;
+    const { _id } = req.params;
+    let { title, body, slug } = req.body;
 
     try {
-        const post = await Post.findOneAndUpdate(params, req.body, { new: true, runValidators: true });
+        const post = await Post.findById(_id);
 
-        if (!post) {
+        if (post?.title !== title) slug = await generateUniqueSlug(title);
+
+        if (slug === false) {
+            res.status(400).json({ message: 'Unable to generate a unique slug after multiple attempts' });
+            return
+        }
+
+        const updtPost = await Post.findByIdAndUpdate(_id, { slug, title, body }, { new: true, runValidators: true });
+
+        if (!updtPost) {
             res.status(404).json({ message: 'Post not found' });
             return
         }
 
-        res.status(200).json(post);
+        res.status(200).json(updtPost);
     } catch (error) {
         res.status(500).json({ message: 'Error updating post', error });
     }
