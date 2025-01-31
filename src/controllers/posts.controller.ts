@@ -7,7 +7,7 @@ export async function createPost(req: Request, res: Response) {
     const { title, content } = req.body;
 
     try {
-        const slug = await generateUniqueSlug(title);
+        const slug = await generateUniqueSlug(Post, title);
 
         if (!slug) {
             res.status(400).json({ message: 'Unable to generate a unique slug after multiple attempts' });
@@ -61,7 +61,7 @@ export async function updatePost(req: Request, res: Response) {
     try {
         const post = await Post.findById(_id);
 
-        if (post?.title !== title) slug = await generateUniqueSlug(title);
+        if (post?.title !== title) slug = await generateUniqueSlug(Post, title);
 
         if (slug === false) {
             res.status(400).json({ message: 'Unable to generate a unique slug after multiple attempts' });

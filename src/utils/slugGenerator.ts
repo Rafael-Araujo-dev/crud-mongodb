@@ -1,4 +1,4 @@
-import Post from '../models/posts.model';
+import { Model } from 'mongoose';
 import crypto from 'crypto';
 
 export function generateSlug(title: string): string {
@@ -10,20 +10,20 @@ export function generateSlug(title: string): string {
     return slug;
 }
 
-export async function generateUniqueSlug(title: string) {
+export async function generateUniqueSlug(model: Model<any>, title: string) {
     const baseSlug = generateSlug(title);
 
     let slug = baseSlug;
-    let existingPost = await Post.findOne({ slug });
+    let existingDocument = await model.findOne({ slug });
 
-    if (existingPost) {
+    if (existingDocument) {
         let attempts = 0;
         let hash = '';
 
-        while (existingPost && attempts < 5) {
+        while (existingDocument && attempts < 5) {
             hash = crypto.randomBytes(6).toString('hex');
             slug = `${baseSlug}-${hash}`;
-            existingPost = await Post.findOne({ slug });
+            existingDocument = await model.findOne({ slug });
             
             attempts++;
         }
