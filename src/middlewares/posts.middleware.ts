@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 
-import PostType from '../types/post.types';
+import PostType from '../types/posts.types';
 
 export function creationValidation(req: Request, res: Response, next: NextFunction) {
     const post = req.body as PostType;

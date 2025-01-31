@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import Post from '../models/post.model';
-import PostType from '../types/post.types';
+import Post from '../models/posts.model';
+import PostType from '../types/posts.types';
 
 export async function createPost(req: Request, res: Response) {
     const newPost: PostType = req.body;

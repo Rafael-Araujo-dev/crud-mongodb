@@ -6,12 +6,12 @@ import {
     getPostById,
     updatePost,
     deletePost
-} from '../controllers/post.controller';
+} from '../controllers/posts.controller';
 
 import {
     creationValidation,
     updateValidation,
-} from '../middlewares/post.middleware';
+} from '../middlewares/posts.middleware';
 
 const router = Router();
 
